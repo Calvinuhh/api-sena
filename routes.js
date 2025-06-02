@@ -3,10 +3,10 @@ import { crearUsuario } from "./controllers.js";
 
 const router = Router();
 
-router.post("/usuarios", crearUsuario);
-// router.get("/usuarios")
-// router.get("/usuarios/:id");
-// router.put("/usuarios/:id")
-// router.delete("/usuarios/:id");
+router.post("/usuarios", crearUsuario); // CREATE ser        ---> Calvin
+// router.get("/usuarios")                  // GET all users     ---> Jesus
+// router.get("/usuarios/:id");             // GET user by ID    ---> Henry
+// router.put("/usuarios/:id")              // UPDATE user by ID ---> Laura
+// router.delete("/usuarios/:id");          // DELETE user by ID ---> Calvin
 
 export default router;
