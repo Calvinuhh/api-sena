@@ -10,7 +10,7 @@ app.use(json());
 app.use(router);
 
 database
-  .sync({ force: true })
+  .sync({ alter: true })
   .then(() => {
     app.listen(3000, () => {
       console.log("La base de datos se ha conectado correctamente");
