@@ -1,6 +1,6 @@
 import { Sequelize, DataTypes } from "sequelize";
 
-const database = new Sequelize("api", "postgres", "admin", {
+const database = new Sequelize("api", "postgres", "1234", {
   host: "localhost",
   dialect: "postgres",
   logging: false,
