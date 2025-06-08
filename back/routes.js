@@ -1,16 +1,38 @@
 import { Router } from "express";
-import { crearUsuario, obtenerUsuarios, actualizarUsuario } from "./controllers.js";
-
+import {
+  obtenerUsuarios,
+  actualizarUsuario,
+  obtenerUsuarioPorId,
+  eliminarUsuario,
+  crearPost,
+  obtenerPosts,
+  crearRegistro,
+} from "./controllers.js";
+import {
+  validarIds,
+  validarPost,
+  validarUsuario,
+  validarIdsPost,
+  validarRegistro,
+  autorizacion,
+} from "./middlewares.js";
 
 const router = Router();
 
-router.post("/usuarios", crearUsuario); // CREATE ser        ---> Calvin
-// router.get("/usuarios")                  // GET all users     ---> Jesus
+router.param("id", validarIds);
+
+// Registro
+router.post("/registro", validarRegistro, crearRegistro);
+// router.post("/login") PARA DESPUES
+
+// Usuarios
 router.get("/usuarios", obtenerUsuarios);
-// router.get("/usuarios/:id");             // GET user by ID    ---> Henry
-router.put("/usuarios/:id", actualizarUsuario)              // UPDATE user by ID ---> Laura
-// router.delete("/usuarios/:id");          // DELETE user by ID ---> Calvin
+router.get("/usuarios/:id", obtenerUsuarioPorId);
+router.put("/usuarios/:id", validarUsuario, actualizarUsuario);
+router.delete("/usuarios/:id", eliminarUsuario);
+
+// Posts
+router.post("/posts/:usuarioId", validarIdsPost, validarPost, crearPost);
+router.get("/posts", obtenerPosts);
 
 export default router;
-
-

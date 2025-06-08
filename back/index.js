@@ -21,6 +21,3 @@ database
     console.log(`Hubo un error: ${error}`);
     throw Error(error);
   });
-
-
-  // Comentario de practica
