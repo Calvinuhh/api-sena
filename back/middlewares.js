@@ -1,4 +1,8 @@
-import { Usuario } from "./database.js";
+import { Usuario, Post } from "./database.js";
+import jwt from "jsonwebtoken";
+
+process.loadEnvFile();
+const { JWT_SECRET } = process.env;
 
 export const validarIds = (req, res, next) => {
   try {
@@ -19,33 +23,6 @@ export const validarIds = (req, res, next) => {
     next();
   } catch (error) {
     res.status(400).json({ error: "Error al validar el ID del usuario" });
-  }
-};
-
-export const validarIdsPost = async (req, res, next) => {
-  try {
-    const { usuarioId } = req.params;
-
-    if (isNaN(Number(usuarioId))) {
-      return res.status(400).json({
-        mensaje: "El ID del post es obligatorio y debe ser un número",
-      });
-    }
-
-    if (Number(usuarioId) <= 0) {
-      return res.status(400).json({
-        mensaje: "El ID del post debe ser un número positivo",
-      });
-    }
-
-    const usuario = await Usuario.findByPk(usuarioId);
-
-    if (!usuario)
-      return res.status(404).json({ mensaje: "Usuario no encontrado" });
-
-    next();
-  } catch (error) {
-    res.status(400).json({ error: "Error al validar el ID del post" });
   }
 };
 
@@ -70,7 +47,6 @@ export const validarUsuario = (req, res, next) => {
       return res
         .status(400)
         .json({ mensaje: "El apellido debe tener entre 2 y 50 caracteres" });
-      
 
     next();
   } catch (error) {
@@ -98,7 +74,7 @@ export const validarPost = (req, res, next) => {
   }
 };
 
-export const validarRegistro = (req, res, next) => {
+export const validarRegistro = async (req, res, next) => {
   try {
     if (!req.body)
       return res.status(400).json({
@@ -106,6 +82,12 @@ export const validarRegistro = (req, res, next) => {
       });
 
     const { username, password } = req.body;
+
+    const userExists = await Usuario.findOne({ where: { username } });
+    if (userExists)
+      return res
+        .status(400)
+        .json({ mensaje: "El nombre de usuario ya está en uso" });
 
     if (!username)
       return res
@@ -129,4 +111,236 @@ export const validarRegistro = (req, res, next) => {
   }
 };
 
-export const autorizacion = (req, res, next) => {};
+export const validarLogin = (req, res, next) => {
+  try {
+    if (!req.body) {
+      return res.status(400).json({
+        mensaje: "El cuerpo de la solicitud es obligatorio",
+      });
+    }
+
+    const { username, password } = req.body;
+
+    if (!username) {
+      return res.status(400).json({
+        mensaje: "El nombre de usuario es obligatorio",
+      });
+    }
+
+    if (!password) {
+      return res.status(400).json({
+        mensaje: "La contraseña es obligatoria",
+      });
+    }
+
+    next();
+  } catch (error) {
+    res.status(400).json({ error: "Error al validar el login" });
+  }
+};
+
+export const validarLike = async (req, res, next) => {
+  try {
+    const { postId, usuarioId } = req.params;
+
+    if (isNaN(Number(postId)) || isNaN(Number(usuarioId))) {
+      return res.status(400).json({
+        mensaje: "Los IDs deben ser números válidos",
+      });
+    }
+
+    if (Number(postId) <= 0 || Number(usuarioId) <= 0) {
+      return res.status(400).json({
+        mensaje: "Los IDs deben ser números positivos",
+      });
+    }
+
+    // Verificar que el post existe
+    const post = await Post.findByPk(postId);
+    if (!post) {
+      return res.status(404).json({ mensaje: "Post no encontrado" });
+    }
+
+    // Verificar que el usuario existe
+    const usuario = await Usuario.findByPk(usuarioId);
+    if (!usuario) {
+      return res.status(404).json({ mensaje: "Usuario no encontrado" });
+    }
+
+    next();
+  } catch (error) {
+    res.status(400).json({ error: "Error al validar el like" });
+  }
+};
+
+export const validarComentario = async (req, res, next) => {
+  try {
+    const { postId, usuarioId } = req.params;
+    const { contenido } = req.body;
+
+    if (!req.body) {
+      return res.status(400).json({
+        mensaje: "El cuerpo de la solicitud es obligatorio",
+      });
+    }
+
+    if (!contenido) {
+      return res.status(400).json({
+        mensaje: "El contenido del comentario es obligatorio",
+      });
+    }
+
+    if (contenido.length < 1 || contenido.length > 500) {
+      return res.status(400).json({
+        mensaje: "El comentario debe tener entre 1 y 500 caracteres",
+      });
+    }
+
+    if (isNaN(Number(postId)) || isNaN(Number(usuarioId))) {
+      return res.status(400).json({
+        mensaje: "Los IDs deben ser números válidos",
+      });
+    }
+
+    if (Number(postId) <= 0 || Number(usuarioId) <= 0) {
+      return res.status(400).json({
+        mensaje: "Los IDs deben ser números positivos",
+      });
+    }
+
+    const post = await Post.findByPk(postId);
+    if (!post) {
+      return res.status(404).json({ mensaje: "Post no encontrado" });
+    }
+
+    const usuario = await Usuario.findByPk(usuarioId);
+    if (!usuario) {
+      return res.status(404).json({ mensaje: "Usuario no encontrado" });
+    }
+
+    next();
+  } catch (error) {
+    res.status(400).json({ error: "Error al validar el comentario" });
+  }
+};
+
+export const validarComentarioId = (req, res, next) => {
+  try {
+    const { comentarioId } = req.params;
+
+    if (isNaN(Number(comentarioId))) {
+      return res.status(400).json({
+        mensaje: "El ID del comentario debe ser un número válido",
+      });
+    }
+
+    if (Number(comentarioId) <= 0) {
+      return res.status(400).json({
+        mensaje: "El ID del comentario debe ser un número positivo",
+      });
+    }
+
+    next();
+  } catch (error) {
+    res.status(400).json({ error: "Error al validar el ID del comentario" });
+  }
+};
+
+export const autorizacion = async (req, res, next) => {
+  try {
+    const { authorization } = req.headers;
+
+    if (!authorization) {
+      return res.status(401).json({
+        mensaje: "Token de autorización requerido",
+      });
+    }
+
+    const token = authorization.split(" ")[1];
+
+    if (!token) {
+      return res.status(401).json({
+        mensaje: "Token de autorización no proporcionado",
+      });
+    }
+
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+    if (typeof decoded === "object") {
+      const usuario = await Usuario.findByPk(decoded.id);
+
+      if (!usuario) {
+        return res.status(404).json({
+          mensaje: "Autorizacion fallida: usuario no encontrado",
+        });
+      }
+
+      req.usuarioInfo = {
+        id: decoded.id,
+        nombre: decoded.nombre,
+        apellido: decoded.apellido,
+      };
+    }
+
+    next();
+  } catch (error) {
+    res.status(400).json({
+      error: "Error interno del servidor en autorización",
+    });
+  }
+};
+
+export const validarPostId = async (req, res, next) => {
+  try {
+    const { postId } = req.params;
+
+    if (isNaN(Number(postId))) {
+      return res.status(400).json({
+        mensaje: "El ID del post debe ser un número válido",
+      });
+    }
+
+    if (Number(postId) <= 0) {
+      return res.status(400).json({
+        mensaje: "El ID del post debe ser un número positivo",
+      });
+    }
+
+    const post = await Post.findByPk(postId);
+    if (!post) {
+      return res.status(404).json({ mensaje: "Post no encontrado" });
+    }
+
+    next();
+  } catch (error) {
+    res.status(400).json({ error: "Error al validar el ID del post" });
+  }
+};
+
+export const validarContenidoComentario = (req, res, next) => {
+  try {
+    if (!req.body) {
+      return res.status(400).json({
+        mensaje: "El cuerpo de la solicitud es obligatorio",
+      });
+    }
+
+    const { contenido } = req.body;
+
+    if (!contenido) {
+      return res.status(400).json({
+        mensaje: "El contenido del comentario es obligatorio",
+      });
+    }
+
+    if (contenido.length < 1 || contenido.length > 500) {
+      return res.status(400).json({
+        mensaje: "El comentario debe tener entre 1 y 500 caracteres",
+      });
+    }
+
+    next();
+  } catch (error) {
+    res.status(400).json({ error: "Error al validar el comentario" });
+  }
+};

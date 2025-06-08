@@ -2,9 +2,18 @@ import express, { json } from "express";
 import morgan from "morgan";
 import database from "./database.js";
 import router from "./routes.js";
+import cors from "cors";
 
 const app = express();
 
+process.loadEnvFile();
+const { CLIENT_URL } = process.env;
+
+app.use(
+  cors({
+    origin: CLIENT_URL,
+  })
+);
 app.use(morgan("dev"));
 app.use(json());
 app.use(router);
