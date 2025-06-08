@@ -1,0 +1,46 @@
+.home-page {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.home-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.welcome-section {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.welcome-title {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.welcome-subtitle {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.posts-feed {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.posts-feed h2 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.posts-feed p {
+  color: #666;
+  font-size: 1.1rem;
+}

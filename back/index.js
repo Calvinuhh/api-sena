@@ -16,7 +16,7 @@ app.use(
 );
 app.use(morgan("dev"));
 app.use(json());
-app.use(router);
+app.use("/api", router);
 
 database
   .sync({ alter: true })
