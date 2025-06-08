@@ -22,22 +22,29 @@ export const crearUsuario = async (req, res) => {
 
 export const actualizarUsuario = async (req, res) => {
   try {
-    const { id } = req.params;
-    const { nombre, apellido, descripcion } = req.body;
+    const { id } = req.usuarioInfo;
+    const { nombre, apellido, descripcion, username } = req.body;
 
     const usuario = await Usuario.findByPk(id);
     if (!usuario)
       return res.status(404).json({ mensaje: "Usuario no encontrado" });
 
-    await usuario.update({ nombre, apellido, descripcion });
+    const updateData = {};
+    if (nombre !== undefined) updateData.nombre = nombre;
+    if (apellido !== undefined) updateData.apellido = apellido;
+    if (descripcion !== undefined) updateData.descripcion = descripcion;
+    if (username !== undefined) updateData.username = username;
+
+    await usuario.update(updateData);
 
     res.json({
       mensaje: "Usuario actualizado correctamente",
       usuario: {
         id,
-        nombre,
-        apellido,
-        descripcion,
+        username: usuario.username,
+        nombre: usuario.nombre,
+        apellido: usuario.apellido,
+        descripcion: usuario.descripcion,
       },
     });
   } catch (error) {
@@ -62,7 +69,7 @@ export const obtenerUsuarios = async (req, res) => {
 
 export const obtenerUsuarioPorId = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.usuarioInfo;
 
     const usuario = await Usuario.findByPk(id, {
       attributes: { exclude: ["password"] },
@@ -75,24 +82,6 @@ export const obtenerUsuarioPorId = async (req, res) => {
     res.status(200).json(usuario);
   } catch (error) {
     res.status(400).json({ error: "Error al obtener el usuario por ID" });
-  }
-};
-
-export const eliminarUsuario = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const usuario = await Usuario.findByPk(id);
-
-    if (!usuario) {
-      return res.status(404).json({ mensaje: "Usuario no encontrado" });
-    }
-
-    await usuario.destroy();
-
-    res.status(200).json({ mensaje: "Usuario eliminado correctamente" });
-  } catch (error) {
-    res.status(400).json({ error: "Error al eliminar el usuario" });
   }
 };
 

@@ -37,7 +37,7 @@ export default function Header() {
             style={{ cursor: "pointer" }}
           >
             <span className="title-icon">✨</span>
-            BlogSphere
+            BlogApi
             <span className="title-subtitle">Comparte tus ideas</span>
           </h1>
         </div>

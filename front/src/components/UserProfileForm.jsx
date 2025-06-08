@@ -15,15 +15,13 @@ export default function UserProfileForm() {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
 
-  // Cargar datos del usuario al montar el componente
   useEffect(() => {
     loadUserData();
   }, []);
-
   const loadUserData = async () => {
     try {
       const token = localStorage.getItem("userToken");
-      const response = await fetch("http://localhost:3000/api/usuarios/me", {
+      const response = await fetch("http://localhost:3000/api/usuario", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -58,10 +56,9 @@ export default function UserProfileForm() {
     e.preventDefault();
     setLoading(true);
     setError("");
-
     try {
       const token = localStorage.getItem("userToken");
-      const response = await fetch("http://localhost:3000/api/usuarios/me", {
+      const response = await fetch("http://localhost:3000/api/usuario", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

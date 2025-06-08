@@ -29,9 +29,8 @@
 }
 
 .profile-layout {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 2rem;
+  display: flex;
+  justify-content: center;
   align-items: start;
 }
 
@@ -40,6 +39,8 @@
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 800px;
 }
 
 .profile-sidebar {
@@ -51,8 +52,11 @@
 /* Responsive design */
 @media (max-width: 1024px) {
   .profile-layout {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
+    justify-content: center;
+  }
+
+  .profile-main {
+    max-width: 600px;
   }
 
   .profile-content {
@@ -67,6 +71,7 @@
 
   .profile-main {
     padding: 1.5rem;
+    max-width: 100%;
   }
 
   .profile-content {

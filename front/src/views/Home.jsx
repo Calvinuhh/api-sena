@@ -8,7 +8,7 @@ export default function Home() {
 
       <div className="home-content">
         <div className="welcome-section">
-          <h1 className="welcome-title">¡Bienvenido a BlogSphere!</h1>
+          <h1 className="welcome-title">¡Bienvenido a BlogApi!</h1>
           <p className="welcome-subtitle">
             Descubre las historias más interesantes de nuestra comunidad
           </p>

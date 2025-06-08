@@ -1,6 +1,5 @@
 import Header from "../components/Header";
 import UserProfileForm from "../components/UserProfileForm";
-import UserStats from "../components/UserStats";
 import "./Profile.css";
 
 export default function Profile() {
@@ -17,10 +16,6 @@ export default function Profile() {
         <div className="profile-layout">
           <div className="profile-main">
             <UserProfileForm />
-          </div>
-
-          <div className="profile-sidebar">
-            <UserStats />
           </div>
         </div>
       </div>

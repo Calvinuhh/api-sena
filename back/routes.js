@@ -3,7 +3,6 @@ import {
   obtenerUsuarios,
   actualizarUsuario,
   obtenerUsuarioPorId,
-  eliminarUsuario,
   crearPost,
   obtenerPosts,
   crearRegistro,
@@ -36,9 +35,8 @@ router.post("/login", validarLogin, loginUsuario);
 
 // Usuarios
 router.get("/usuarios", obtenerUsuarios);
-router.get("/usuarios/:id", obtenerUsuarioPorId);
-router.put("/usuarios/:id", validarUsuario, actualizarUsuario);
-router.delete("/usuarios/:id", eliminarUsuario);
+router.get("/usuario", autorizacion, obtenerUsuarioPorId);
+router.put("/usuario", autorizacion, validarUsuario, actualizarUsuario);
 
 // Posts
 router.post("/posts", autorizacion, validarPost, crearPost);
