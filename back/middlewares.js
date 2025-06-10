@@ -155,13 +155,11 @@ export const validarLike = async (req, res, next) => {
       });
     }
 
-    // Verificar que el post existe
     const post = await Post.findByPk(postId);
     if (!post) {
       return res.status(404).json({ mensaje: "Post no encontrado" });
     }
 
-    // Verificar que el usuario existe
     const usuario = await Usuario.findByPk(usuarioId);
     if (!usuario) {
       return res.status(404).json({ mensaje: "Usuario no encontrado" });
@@ -170,79 +168,6 @@ export const validarLike = async (req, res, next) => {
     next();
   } catch (error) {
     res.status(400).json({ error: "Error al validar el like" });
-  }
-};
-
-export const validarComentario = async (req, res, next) => {
-  try {
-    const { postId, usuarioId } = req.params;
-    const { contenido } = req.body;
-
-    if (!req.body) {
-      return res.status(400).json({
-        mensaje: "El cuerpo de la solicitud es obligatorio",
-      });
-    }
-
-    if (!contenido) {
-      return res.status(400).json({
-        mensaje: "El contenido del comentario es obligatorio",
-      });
-    }
-
-    if (contenido.length < 1 || contenido.length > 500) {
-      return res.status(400).json({
-        mensaje: "El comentario debe tener entre 1 y 500 caracteres",
-      });
-    }
-
-    if (isNaN(Number(postId)) || isNaN(Number(usuarioId))) {
-      return res.status(400).json({
-        mensaje: "Los IDs deben ser números válidos",
-      });
-    }
-
-    if (Number(postId) <= 0 || Number(usuarioId) <= 0) {
-      return res.status(400).json({
-        mensaje: "Los IDs deben ser números positivos",
-      });
-    }
-
-    const post = await Post.findByPk(postId);
-    if (!post) {
-      return res.status(404).json({ mensaje: "Post no encontrado" });
-    }
-
-    const usuario = await Usuario.findByPk(usuarioId);
-    if (!usuario) {
-      return res.status(404).json({ mensaje: "Usuario no encontrado" });
-    }
-
-    next();
-  } catch (error) {
-    res.status(400).json({ error: "Error al validar el comentario" });
-  }
-};
-
-export const validarComentarioId = (req, res, next) => {
-  try {
-    const { comentarioId } = req.params;
-
-    if (isNaN(Number(comentarioId))) {
-      return res.status(400).json({
-        mensaje: "El ID del comentario debe ser un número válido",
-      });
-    }
-
-    if (Number(comentarioId) <= 0) {
-      return res.status(400).json({
-        mensaje: "El ID del comentario debe ser un número positivo",
-      });
-    }
-
-    next();
-  } catch (error) {
-    res.status(400).json({ error: "Error al validar el ID del comentario" });
   }
 };
 
@@ -287,60 +212,5 @@ export const autorizacion = async (req, res, next) => {
     res.status(400).json({
       error: "Error interno del servidor en autorización",
     });
-  }
-};
-
-export const validarPostId = async (req, res, next) => {
-  try {
-    const { postId } = req.params;
-
-    if (isNaN(Number(postId))) {
-      return res.status(400).json({
-        mensaje: "El ID del post debe ser un número válido",
-      });
-    }
-
-    if (Number(postId) <= 0) {
-      return res.status(400).json({
-        mensaje: "El ID del post debe ser un número positivo",
-      });
-    }
-
-    const post = await Post.findByPk(postId);
-    if (!post) {
-      return res.status(404).json({ mensaje: "Post no encontrado" });
-    }
-
-    next();
-  } catch (error) {
-    res.status(400).json({ error: "Error al validar el ID del post" });
-  }
-};
-
-export const validarContenidoComentario = (req, res, next) => {
-  try {
-    if (!req.body) {
-      return res.status(400).json({
-        mensaje: "El cuerpo de la solicitud es obligatorio",
-      });
-    }
-
-    const { contenido } = req.body;
-
-    if (!contenido) {
-      return res.status(400).json({
-        mensaje: "El contenido del comentario es obligatorio",
-      });
-    }
-
-    if (contenido.length < 1 || contenido.length > 500) {
-      return res.status(400).json({
-        mensaje: "El comentario debe tener entre 1 y 500 caracteres",
-      });
-    }
-
-    next();
-  } catch (error) {
-    res.status(400).json({ error: "Error al validar el comentario" });
   }
 };

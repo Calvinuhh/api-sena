@@ -86,121 +86,12 @@ export const Post = database.define(
   { timestamps: false }
 );
 
-export const Like = database.define(
-  "Like",
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-      unique: true,
-    },
-    usuario_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: Usuario,
-        key: "id",
-      },
-    },
-    post_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: Post,
-        key: "id",
-      },
-    },
-  },
-  {
-    timestamps: false,
-    indexes: [
-      {
-        unique: true,
-        fields: ["usuario_id", "post_id"],
-      },
-    ],
-  }
-);
-
-export const Comentario = database.define(
-  "Comentario",
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-      unique: true,
-    },
-    contenido: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    usuario_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: Usuario,
-        key: "id",
-      },
-    },
-    post_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: Post,
-        key: "id",
-      },
-    },
-    fechaCreacion: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-    },
-  },
-  { timestamps: false }
-);
-
-// Relaciones existentes
 Usuario.hasMany(Post, {
   foreignKey: "usuario_id",
 });
 
 Post.belongsTo(Usuario, {
   foreignKey: "usuario_id",
-});
-
-// Nuevas relaciones para Likes
-Usuario.hasMany(Like, {
-  foreignKey: "usuario_id",
-});
-
-Post.hasMany(Like, {
-  foreignKey: "post_id",
-});
-
-Like.belongsTo(Usuario, {
-  foreignKey: "usuario_id",
-});
-
-Like.belongsTo(Post, {
-  foreignKey: "post_id",
-});
-
-// Nuevas relaciones para Comentarios
-Usuario.hasMany(Comentario, {
-  foreignKey: "usuario_id",
-});
-
-Post.hasMany(Comentario, {
-  foreignKey: "post_id",
-});
-
-Comentario.belongsTo(Usuario, {
-  foreignKey: "usuario_id",
-});
-
-Comentario.belongsTo(Post, {
-  foreignKey: "post_id",
 });
 
 export default database;
