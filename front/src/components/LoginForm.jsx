@@ -37,7 +37,7 @@ export default function LoginForm() {
 
     try {
       const response = await fetch(
-        "https://api-sena-front.onrender.com/api/login",
+        "https://api-sena-6j30.onrender.com/api/login",
         {
           method: "POST",
           headers: {

@@ -25,7 +25,7 @@ export default function RegisterForm() {
 
     try {
       const response = await fetch(
-        "https://api-sena-front.onrender.com/api/registro",
+        "https://api-sena-6j30.onrender.com/api/registro",
         {
           method: "POST",
           headers: {

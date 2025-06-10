@@ -23,7 +23,7 @@ export default function UserProfile() {
     try {
       setLoading(true);
       const res = await fetch(
-        `https://api-sena-front.onrender.com/api/usuarios/${id}`
+        `https://api-sena-6j30.onrender.com/api/usuarios/${id}`
       );
 
       if (!res.ok) {

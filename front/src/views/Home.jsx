@@ -11,7 +11,7 @@ export default function Home() {
   //peticion al back, guardo los posts en el estado posts, mas reciente primero
   const cargarPosts = async () => {
     try {
-      const res = await fetch("https://api-sena-front.onrender.com/api/posts");
+      const res = await fetch("https://api-sena-6j30.onrender.com/api/posts");
       const data = await res.json();
       setPosts(data.reverse());
     } catch (error) {

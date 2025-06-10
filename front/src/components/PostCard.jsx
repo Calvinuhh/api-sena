@@ -22,7 +22,7 @@ const PostCard = ({ onPostPublished }) => {
       const token = localStorage.getItem("userToken"); //para obtener el token del localStorage
 
       //enviarr la solicitud POST al backend
-      const res = await fetch("https://api-sena-front.onrender.com/api/posts", {
+      const res = await fetch("https://api-sena-6j30.onrender.com/api/posts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

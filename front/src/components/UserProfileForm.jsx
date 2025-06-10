@@ -22,7 +22,7 @@ export default function UserProfileForm() {
     try {
       const token = localStorage.getItem("userToken");
       const response = await fetch(
-        "https://api-sena-front.onrender.com/api/usuario",
+        "https://api-sena-6j30.onrender.com/api/usuario",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -62,7 +62,7 @@ export default function UserProfileForm() {
     try {
       const token = localStorage.getItem("userToken");
       const response = await fetch(
-        "https://api-sena-front.onrender.com/api/usuario",
+        "https://api-sena-6j30.onrender.com/api/usuario",
         {
           method: "PUT",
           headers: {
