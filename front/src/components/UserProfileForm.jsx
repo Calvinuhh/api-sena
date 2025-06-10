@@ -21,11 +21,14 @@ export default function UserProfileForm() {
   const loadUserData = async () => {
     try {
       const token = localStorage.getItem("userToken");
-      const response = await fetch("http://localhost:3000/api/usuario", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        "https://api-sena-front.onrender.com/api/usuario",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (response.ok) {
         const userData = await response.json();
@@ -58,14 +61,17 @@ export default function UserProfileForm() {
     setError("");
     try {
       const token = localStorage.getItem("userToken");
-      const response = await fetch("http://localhost:3000/api/usuario", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "https://api-sena-front.onrender.com/api/usuario",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (response.ok) {
         setToastMessage("Perfil actualizado correctamente");

@@ -22,7 +22,9 @@ export default function UserProfile() {
   const cargarUsuario = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:3000/api/usuarios/${id}`);
+      const res = await fetch(
+        `https://api-sena-front.onrender.com/api/usuarios/${id}`
+      );
 
       if (!res.ok) {
         throw new Error("Usuario no encontrado");
