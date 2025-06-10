@@ -1,7 +1,28 @@
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
+import PostCard from "../components/PostCard";
+import { Card, CardContent, Typography } from "@mui/material";
 import "./Home.css";
 
 export default function Home() {
+  const [posts, setPosts] = useState([]);
+
+  //peticion al back, guardo los posts en el estado posts, mas reciente primero
+  const cargarPosts = async () => {
+    try {
+      const res = await fetch("http://localhost:3000/api/posts");
+      const data = await res.json();
+      setPosts(data.reverse());
+    } catch (error) {
+      console.error("Error al cargar posts:", error);
+    }
+  };
+
+  //guardar posts al cargar la página
+  useEffect(() => {
+    cargarPosts();
+  }, []);
+
   return (
     <div className="home-page">
       <Header />
@@ -16,8 +37,27 @@ export default function Home() {
 
         <div className="posts-feed">
           <h2>Feed de Posts</h2>
-          <p>Aquí aparecerán todos los posts de los usuarios...</p>
-          <p>¡Próximamente implementaremos esta funcionalidad!</p>
+
+          {/* se muestra automaticamente sin recargar la pagina*/}
+          <PostCard onPostPublished={cargarPosts} />
+
+          {posts.length === 0 ? (
+            <p>No hay publicaciones aún.</p>
+          ) : (
+            posts.map((post) => (
+              <Card key={post.id} sx={{ marginBottom: 2 }}>
+                <CardContent>
+                  <Typography variant="h6">{post.titulo}</Typography>
+                  <Typography variant="body1" sx={{ marginY: 1 }}>
+                    {post.contenido}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    Publicado por: {post.Usuario?.nombre || "Anónimo"}
+                  </Typography>
+                </CardContent>
+              </Card>
+            ))
+          )}
         </div>
       </div>
     </div>
