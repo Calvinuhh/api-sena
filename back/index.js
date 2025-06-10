@@ -6,7 +6,7 @@ import cors from "cors";
 
 const app = express();
 
-const { CLIENT_URL } = process.env;
+const { CLIENT_URL, PORT } = process.env;
 
 app.use(
   cors({
@@ -18,9 +18,9 @@ app.use(json());
 app.use("/api", router);
 
 database
-  .sync({ alter: true })
+  .sync()
   .then(() => {
-    app.listen(3000, () => {
+    app.listen(PORT, () => {
       console.log("La base de datos se ha conectado correctamente");
       console.log("Proyecto escuchando en el puerto 3000");
     });
