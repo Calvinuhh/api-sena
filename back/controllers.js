@@ -5,21 +5,6 @@ import jwt from "jsonwebtoken";
 process.loadEnvFile();
 const { JWT_SECRET } = process.env;
 
-export const crearUsuario = async (req, res) => {
-  try {
-    const { nombre, apellido } = req.body;
-
-    const nuevoUsuario = await Usuario.create({
-      nombre,
-      apellido,
-    });
-
-    res.status(201).json(nuevoUsuario);
-  } catch (error) {
-    return res.status(400).json({ error: error.message });
-  }
-};
-
 export const actualizarUsuario = async (req, res) => {
   try {
     const { id } = req.usuarioInfo;
@@ -28,6 +13,19 @@ export const actualizarUsuario = async (req, res) => {
     const usuario = await Usuario.findByPk(id);
     if (!usuario)
       return res.status(404).json({ mensaje: "Usuario no encontrado" });
+
+    if (username !== undefined && username !== usuario.username) {
+      const usuarioExistente = await Usuario.findOne({
+        where: { username },
+      });
+
+      if (usuarioExistente) {
+        return res.status(400).json({
+          mensaje:
+            "El nombre de usuario ya está en uso. Por favor, elige otro.",
+        });
+      }
+    }
 
     const updateData = {};
     if (nombre !== undefined) updateData.nombre = nombre;
@@ -64,6 +62,24 @@ export const obtenerUsuarios = async (req, res) => {
     res.status(200).json(usuarios);
   } catch (error) {
     res.status(400).json({ error: "Error al obtener los usuarios" });
+  }
+};
+
+export const obtenerUsuarioPorIdParam = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const usuario = await Usuario.findByPk(id, {
+      attributes: { exclude: ["password"] },
+    });
+
+    if (!usuario) {
+      return res.status(404).json({ mensaje: "Usuario no encontrado" });
+    }
+
+    res.status(200).json(usuario);
+  } catch (error) {
+    res.status(400).json({ error: "Error al obtener el usuario por ID" });
   }
 };
 

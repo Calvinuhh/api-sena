@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
-import PostCard from "../components/PostCard";
 import { Card, CardContent, Typography } from "@mui/material";
 import "./Home.css";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
+  const navigate = useNavigate();
 
   //peticion al back, guardo los posts en el estado posts, mas reciente primero
   const cargarPosts = async () => {
@@ -17,15 +18,19 @@ export default function Home() {
       console.error("Error al cargar posts:", error);
     }
   };
-
   //guardar posts al cargar la página
   useEffect(() => {
     cargarPosts();
   }, []);
 
+  const goToUserProfile = (userId) => {
+    if (userId) {
+      navigate(`/${userId}`);
+    }
+  };
   return (
     <div className="home-page">
-      <Header />
+      <Header onPostPublished={cargarPosts} />
 
       <div className="home-content">
         <div className="welcome-section">
@@ -38,9 +43,6 @@ export default function Home() {
         <div className="posts-feed">
           <h2>Feed de Posts</h2>
 
-          {/* se muestra automaticamente sin recargar la pagina*/}
-          <PostCard onPostPublished={cargarPosts} />
-
           {posts.length === 0 ? (
             <p>No hay publicaciones aún.</p>
           ) : (
@@ -52,7 +54,13 @@ export default function Home() {
                     {post.contenido}
                   </Typography>
                   <Typography variant="caption" color="text.secondary">
-                    Publicado por: {post.Usuario?.nombre || "Anónimo"}
+                    Publicado por:{" "}
+                    <span
+                      className="username-link"
+                      onClick={() => goToUserProfile(post.Usuario?.id)}
+                    >
+                      {post.Usuario?.nombre || "Anónimo"}
+                    </span>
                   </Typography>
                 </CardContent>
               </Card>

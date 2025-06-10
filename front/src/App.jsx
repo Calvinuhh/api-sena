@@ -3,6 +3,7 @@ import Home from "./views/Home.jsx";
 import Registro from "./views/Registro.jsx";
 import Login from "./views/Login.jsx";
 import Profile from "./views/Profile.jsx";
+import UserProfile from "./views/UserProfile.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import GuestRoute from "./components/GuestRoute.jsx";
 
@@ -33,12 +34,20 @@ function App() {
               <Login />
             </GuestRoute>
           }
-        />
+        />{" "}
         <Route
           path="/profile"
           element={
             <ProtectedRoute>
               <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/:id"
+          element={
+            <ProtectedRoute>
+              <UserProfile />
             </ProtectedRoute>
           }
         />

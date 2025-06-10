@@ -44,3 +44,16 @@
   color: #666;
   font-size: 1.1rem;
 }
+
+.username-link {
+  color: #1976d2;
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.username-link:hover {
+  color: #1565c0;
+  text-decoration: none;
+}

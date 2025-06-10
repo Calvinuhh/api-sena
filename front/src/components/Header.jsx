@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import PostModal from "./PostModal";
 import "./Header.css";
 
-export default function Header() {
+export default function Header({ onPostPublished }) {
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [showPostModal, setShowPostModal] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -20,10 +22,18 @@ export default function Header() {
     navigate("/profile");
     setShowUserMenu(false);
   };
-
   const goToHome = () => {
     navigate("/");
     setShowUserMenu(false);
+  };
+
+  const openPostModal = () => {
+    setShowPostModal(true);
+    setShowUserMenu(false);
+  };
+
+  const closePostModal = () => {
+    setShowPostModal(false);
   };
 
   return (
@@ -83,8 +93,8 @@ export default function Header() {
                     />
                   </svg>
                   Mi Perfil
-                </div>
-                <div className="user-menu-item">
+                </div>{" "}
+                <div className="user-menu-item" onClick={openPostModal}>
                   <svg
                     width="16"
                     height="16"
@@ -117,9 +127,15 @@ export default function Header() {
                 </div>
               </div>
             )}
-          </div>
+          </div>{" "}
         </div>
       </div>
+
+      <PostModal
+        open={showPostModal}
+        onClose={closePostModal}
+        onPostPublished={onPostPublished}
+      />
     </header>
   );
 }

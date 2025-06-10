@@ -19,7 +19,7 @@ const PostCard = ({ onPostPublished }) => {
     }
 
     try {
-      const token = localStorage.getItem("token"); //para obtener el token del localStorage
+      const token = localStorage.getItem("userToken"); //para obtener el token del localStorage
 
       //enviarr la solicitud POST al backend
       const res = await fetch("http://localhost:3000/api/posts", {
@@ -44,9 +44,8 @@ const PostCard = ({ onPostPublished }) => {
       alert("Error al publicar");
     }
   };
-
   return (
-    <Card sx={{ marginBottom: 3 }}>
+    <Card>
       <CardContent>
         <Typography variant="h6">Crear publicación</Typography>
         <TextField
