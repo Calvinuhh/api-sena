@@ -1,13 +1,14 @@
 import { Sequelize, DataTypes } from "sequelize";
 
-const { DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD } = process.env;
+const { DATABASE_NAME, DATABASE_USER, DATABASE_PASSWORD, DATABASE_HOST } =
+  process.env;
 
 const database = new Sequelize(
   DATABASE_NAME,
   DATABASE_USER,
   DATABASE_PASSWORD,
   {
-    host: "localhost",
+    host: DATABASE_HOST,
     dialect: "postgres",
     logging: false,
   }
