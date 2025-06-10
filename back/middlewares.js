@@ -1,7 +1,6 @@
 import { Usuario, Post } from "./database.js";
 import jwt from "jsonwebtoken";
 
-process.loadEnvFile();
 const { JWT_SECRET } = process.env;
 
 export const validarIds = (req, res, next) => {

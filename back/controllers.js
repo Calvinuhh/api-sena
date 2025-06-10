@@ -2,7 +2,6 @@ import { Usuario, Post } from "./database.js";
 import { hash, compare } from "bcrypt";
 import jwt from "jsonwebtoken";
 
-process.loadEnvFile();
 const { JWT_SECRET } = process.env;
 
 export const actualizarUsuario = async (req, res) => {
